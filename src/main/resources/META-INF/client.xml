@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+        <property name="clientMode" value="true"/>
+
+        <property name="pluginConfigurations">
+            <bean class="org.gridgain.grid.configuration.GridGainConfiguration">
+                <property name="securityCredentialsProvider">
+                    <bean class="org.apache.ignite.plugin.security.SecurityCredentialsBasicProvider">
+                        <constructor-arg>
+                            <bean class="org.apache.ignite.plugin.security.SecurityCredentials">
+                                <property name="login" value="vkulichenko"/>
+                                <property name="password" value="p@ssw0rd"/>
+                            </bean>
+                        </constructor-arg>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                <property name="ipFinder">
+                    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+                        <property name="addresses">
+                            <list>
+                                <value>127.0.0.1:47500..47509</value>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+        <property name="cacheConfiguration">
+            <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                <property name="name" value="TestCache"/>
+            </bean>
+        </property>
+
+        <property name="pluginConfigurations">
+            <bean class="org.gridgain.grid.configuration.GridGainConfiguration">
+                <property name="authenticator">
+                    <bean class="org.gridgain.grid.security.jaas.JaasAuthenticator">
+                        <property name="permissionsProvider">
+                            <bean class="org.gridgain.grid.security.jaas.JaasBasicPermissionsProvider">
+                                <constructor-arg>
+                                    <map>
+                                        <entry key="GG_CacheReadOnlyUsers">
+                                            <bean class="org.apache.ignite.plugin.security.SecurityBasicPermissionSet">
+                                                <property name="defaultAllowAll" value="false"/>
+                                                <property name="cachePermissions">
+                                                    <map>
+                                                        <entry key="*">
+                                                            <list>
+                                                                <value>CACHE_READ</value>
+                                                            </list>
+                                                        </entry>
+                                                    </map>
+                                                </property>
+                                            </bean>
+                                        </entry>
+
+                                        <entry key="GG_CacheReadWriteUsers">
+                                            <bean class="org.apache.ignite.plugin.security.SecurityBasicPermissionSet">
+                                                <property name="defaultAllowAll" value="false"/>
+                                                <property name="cachePermissions">
+                                                    <map>
+                                                        <entry key="*">
+                                                            <list>
+                                                                <value>CACHE_READ</value>
+                                                                <value>CACHE_PUT</value>
+                                                                <value>CACHE_REMOVE</value>
+                                                            </list>
+                                                        </entry>
+                                                    </map>
+                                                </property>
+                                            </bean>
+                                        </entry>
+
+                                        <entry key="GG_WebConsoleUsers">
+                                            <bean class="org.apache.ignite.plugin.security.SecurityBasicPermissionSet">
+                                                <property name="defaultAllowAll" value="false"/>
+                                                <property name="cachePermissions">
+                                                    <map>
+                                                        <entry key="*">
+                                                            <list>
+                                                                <value>ADMIN_VIEW</value>
+                                                                <value>ADMIN_CACHE</value>
+                                                                <value>ADMIN_QUERY</value>
+                                                                <value>ADMIN_OPS</value>
+                                                            </list>
+                                                        </entry>
+                                                    </map>
+                                                </property>
+                                            </bean>
+                                        </entry>
+
+                                        <entry key="GG_SuperUsers">
+                                            <bean class="org.apache.ignite.plugin.security.SecurityBasicPermissionSet">
+                                                <property name="defaultAllowAll" value="true"/>
+                                            </bean>
+                                        </entry>
+                                    </map>
+                                </constructor-arg>
+                            </bean>
+                        </property>
+                    </bean>
+                </property>
+
+                <property name="securityCredentialsProvider">
+                    <bean class="org.apache.ignite.plugin.security.SecurityCredentialsBasicProvider">
+                        <constructor-arg>
+                            <bean class="org.apache.ignite.plugin.security.SecurityCredentials">
+                                <property name="login" value="GG_ServerAccount"/>
+                                <property name="password" value="VeryStrongPassword123"/>
+                            </bean>
+                        </constructor-arg>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                <property name="ipFinder">
+                    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+                        <property name="addresses">
+                            <list>
+                                <value>127.0.0.1:47500..47509</value>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>
