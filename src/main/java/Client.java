@@ -21,12 +21,12 @@ import org.apache.ignite.Ignition;
 
 public class Client {
     public static void main(String[] args) {
-        Ignite ignite = Ignition.start("client.xml");
+        try (Ignite ignite = Ignition.start("client.xml")) {
+            IgniteCache<Integer, Integer> cache = ignite.cache("TestCache");
 
-        IgniteCache<Integer, Integer> cache = ignite.cache("TestCache");
+            System.out.println("Cache value for key 5: " + cache.get(5));
 
-        System.out.println("Cache value for key 5: " + cache.get(5));
-
-        cache.put(5, 100);
+            cache.put(5, 100);
+        }
     }
 }
