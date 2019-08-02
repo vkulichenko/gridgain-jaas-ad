@@ -5,7 +5,7 @@ Active Directory without any custom code, using only out-of-the-box capabilities
 
 Build
 -----
-   mvn clean package
+    mvn clean package
 
 Start Server Node
 -----------------
