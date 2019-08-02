@@ -27,6 +27,8 @@ public class Server {
         Ignite ignite = Ignition.start("server.xml");
 
         ignite.events().localListen(event -> {
+            System.out.println("Authenticated subjects:");
+
             GridGain gg = ignite.plugin(GridGain.PLUGIN_NAME);
 
             for (SecuritySubject subject : gg.security().authenticatedSubjects())
