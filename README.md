@@ -3,7 +3,7 @@
 This configuration and code example shows how to integrate GridGain's security framework with
 Active Directory without any custom code, using only out-of-the-box capabilities.
 
-The solution is described in detail here: *link TBD*
+The solution is described in detail here: https://medium.com/@valentin.kulichenko/role-based-authorization-with-active-directory-for-gridgain-eaad394ba173
 
 ## Build
 
